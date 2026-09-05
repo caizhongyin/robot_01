@@ -5,7 +5,7 @@
 updating
 
 # 增加git目录
-find . -type d -empty -exec touch {}/.gitkeep \
+find . -type d -empty -exec touch {}/.gitkeep \;
 
 # 工程结构
 python capability/tools/tree.py

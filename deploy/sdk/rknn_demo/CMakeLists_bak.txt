@@ -1,0 +1,31 @@
+cmake_minimum_required(VERSION 3.4.1)
+project(rknn_ssd_demo_linux)
+set(CMAKE_SYSTEM_NAME Linux)
+set(CMAKE_C_COMPILER   aarch64-linux-gnu-gcc-8)
+set(CMAKE_CXX_COMPILER aarch64-linux-gnu-g++-8)
+set(LIB_ARCH lib64)
+rknn api
+set(RKNN_API_PATH ${CMAKE_SOURCE_DIR}/../../librknn_api_3399pro)
+include_directories(${RKNN_API_PATH}/include)
+set(RKNN_API_LIB ${RKNN_API_PATH}/Linux/${LIB_ARCH}/librknn_api.so)
+opencv
+if(LIB_ARCH STREQUAL "lib")
+set(OpenCV_DIR ${CMAKE_SOURCE_DIR}/../3rdparty/opencv/opencv-linux-armhf/share/OpenCV)
+else()
+set(OpenCV_DIR ${CMAKE_SOURCE_DIR}/../3rdparty/opencv/opencv-linux-aarch64/share/OpenCV)
+endif()
+find_package(OpenCV REQUIRED)
+set(CMAKE_INSTALL_RPATH "lib")
+add_executable(nanodet
+src/main.cc
+src/NanoDet.cpp
+)
+target_link_libraries(nanodet
+${RKNN_API_LIB}
+${OpenCV_LIBS}
+)
+install target and libraries
+set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/install/nanodet)
+install(TARGETS nanodet DESTINATION ./)
+install(DIRECTORY model DESTINATION ./)
+install(PROGRAMS ${RKNN_API_LIB} DESTINATION lib)
