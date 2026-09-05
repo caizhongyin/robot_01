@@ -1,0 +1,336 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue}
+\title{A Theory and Implementation of General Intelligence: From Cognitive Architecture to Embodied Agents}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The fundamental inquiry into the nature of intelligence and its artificial realization lies at the heart of AI research. From the perspective of cognitive science, this paper proposes the core thesis that “Intellect is mapping” and systematically elaborates a theoretical framework in which intellect is understood as the capacity for information filtering, compression, storage, association, transformation, and generation. 
+We formalize this as: 
+\[
+\mathcal{I}: \mathcal{X} \to \mathcal{Y}, \quad \mathcal{I} = \{ \text{attention, perception, memory, search, computation, imagination} \},
+\]
+where $\mathcal{X}$ is the input information space and $\mathcal{Y}$ is the output feature space. We decompose intelligence into the synergistic interplay of intellect, knowledge, and resources. On this basis, we construct a modular architecture for general-purpose agent, encompassing elemental intellectual faculties such as attention, perception, memory, search, computation, and imagination, as well as their combinations—recognition and creativity. We further discuss implementation pathways across three levels: embodied intelligence, collective intelligence, and machine intelligence. Special attention is given to the triadic technology stack of data–algorithm–compute, analyzing the full closed loop from data acquisition, cleaning, mining, and annotation to simulation training and real-robot deployment, along with the engineering realization of core modules including perception, planning, control, end-to-end learning, and language understanding and generation. Through a comparative analysis of symbolism and connectionism, we argue for the viability of neuro-symbolic fusion architectures as a pathway to general intelligence, and establish a five-dimensional evaluation system for intelligence in terms of precision, speed, depth, breadth, and efficiency. Finally, we point out that building a general-purpose brain with full perception, planning, control, autonomous exploration, and continual learning capabilities, combined with diverse effectors and rapid iteration in real-world scenarios, constitutes a pragmatic path toward artificial general intelligence.
+\end{abstract}
+
+\textbf{Keywords:} intelligence theory; cognitive architecture; embodied AI; neuro-symbolic AI; general-purpose agent; continual learning
+
+\section{Introduction}
+Since the birth of artificial intelligence, the questions of “what is intelligence” and “how to realize it” have never ceased. From the Turing test to symbolism, from connectionism to today’s neuro-symbolic fusion, every theoretical breakthrough and technological advance has redefined the boundaries of intelligence. However, despite deep learning and large language models demonstrating superhuman performance on specific tasks, the realization of general intelligence still faces fundamental challenges.
+
+A notable characteristic of current AI research is that basic modules are becoming mature, yet system-level integration remains insufficient. Perception models have made great strides in vision, text, speech, and other modalities; large language models exhibit surprising reasoning and planning abilities; and reinforcement learning has reached superhuman levels in certain control tasks [13]. Nevertheless, organically integrating these modules into a single general-purpose agent that can continually learn and autonomously make decisions in open, unstructured environments remains an open problem [3][4][5][10].
+
+The goal of this paper is to construct a complete theoretical framework from the fundamental definition of intelligence to its engineering implementation. Our core view is that the essence of intelligence is mapping—the transformation of information into features, and features into other information or new information. Intellect, as meta-cognitive capacity, underlies all concrete abilities; capabilities, in turn, are the synergistic product of intellect, knowledge, and resources. Based on this definition, we can decompose a general-purpose agent into engineering-realizable functional modules and systematically examine the achievements and shortcomings of existing technologies along the data–algorithm–compute axis.
+
+The contributions of this paper are:
+(1) Proposing “intellect as mapping” as a unified theoretical framework, incorporating elemental faculties—attention, perception, memory, search, computation, and imagination—into a coherent cognitive architecture.
+(2) Constructing a complete mapping from cognitive modules to engineering implementations, providing a reference architecture for the design of general-purpose agents.
+(3) Systematically analyzing key technical challenges and solution paths at the three levels of data engineering, algorithm design, and compute deployment.
+(4) Establishing a multi-dimensional evaluation system for intelligence and offering a comparative analysis between human and machine intelligence.
+
+\section{Theoretical Foundations of Intelligence}
+\subsection{Definition of Intelligence: Intellect and Capability}
+Intelligence is a multi-layered concept. From a functionalist perspective, it can be decomposed into two dimensions: intellect and capability. Intellect is the core of intelligence—the meta-cognitive capacity for processing information; capability is the external manifestation of intellect when combined with knowledge and resources in specific contexts.
+
+\subsection{Intellect as Mapping}
+We propose the core thesis that \emph{Intellect is mapping}: the ability to transform information from one form to another. Formally, 
+\[
+\mathcal{I}: \mathcal{X} \to \mathcal{Y}, \quad \mathcal{Y} = \mathcal{I}(\mathcal{X}),
+\]
+where $\mathcal{X}$ is the input information (raw data, queries, etc.) and $\mathcal{Y}$ is the output representation (features, decisions, generated content). Specifically, Intellect comprises the following basic operations:
+\begin{itemize}
+\item \textbf{Attention}: information weighting, filtering out irrelevant information. This can be written as 
+\[
+\mathbf{a} = \text{softmax}(\mathbf{q}^\top \mathbf{K}) \mathbf{V}, \quad \mathbf{x}_{\text{att}} = \mathbf{a} \odot \mathbf{x}.
+\]
+\item \textbf{Perception}: extracting features from raw information: 
+\[
+\mathbf{f} = \mathcal{P}(\mathbf{x}; \theta_p), \quad \mathbf{f} \in \mathbb{R}^d.
+\]
+\item \textbf{Memory}: storing features in retrievable forms, i.e., a storage operator $\mathcal{M}: \mathbf{f} \mapsto (\text{index}, \mathbf{f})$.
+\item \textbf{Search}: establishing associations among features and retrieving them:
+\[
+\mathbf{f}_{\text{ret}} = \arg\max_{\mathbf{f}_i \in \mathcal{M}} \ \text{sim}(\mathbf{f}_q, \mathbf{f}_i),
+\]
+where $\text{sim}$ is a similarity measure (e.g., cosine similarity).
+\item \textbf{Computation}: transforming perceptual features, associative features, and operational symbols into new patterns:
+\[
+\mathbf{y} = \mathcal{C}(\mathbf{f}_1, \mathbf{f}_2, \dots, \mathbf{f}_n; \theta_c).
+\]
+\item \textbf{Imagination}: recombination, fusion, and generation of features:
+\[
+\mathbf{f}_{\text{new}} = \mathcal{G}(\mathbf{f}_1, \mathbf{f}_2, \dots; \theta_g).
+\]
+\end{itemize}
+These basic intellectual operations can be combined into higher-level cognitive functions. \emph{Recognition} is the combination of attention, perception, memory, and search—from information to features to memory association:
+\[
+\text{Recognition}: \mathbf{x} \xrightarrow{\text{attention}} \mathbf{x}_{\text{att}} \xrightarrow{\text{perception}} \mathbf{f} \xrightarrow{\text{search}} \mathbf{f}_{\text{ret}} \to \text{label/entity}.
+\]
+\emph{Creativity} further incorporates computation, imagination, and validation—including both discovery-based innovation (discovering new features) and combinatorial innovation (generating new combinations), both requiring validation with real data. This can be expressed as:
+\[
+\text{Creativity}: \mathbf{f}_{\text{new}} = \mathcal{G}(\mathcal{C}(\mathbf{f}_1,\mathbf{f}_2,\dots)), \quad \text{validated by } \mathcal{V}(\mathbf{f}_{\text{new}}, \text{real data}) \to \text{accept/reject}.
+\]
+
+\subsection{Capability: Synergy of Intellect, Knowledge, and Resources}
+If intellect is the “hardware” foundation of intelligence, then capability is the “software” manifestation when intellect is combined with knowledge and resources. We define:
+\[
+\text{Capability } C = \mathcal{F}(\mathcal{I}, K, R),
+\]
+where $\mathcal{I}$ is intellect, $K$ is knowledge, and $R$ represents resources (matter, energy, information, time, space). Knowledge can be viewed as the integral of intellect over time:
+\[
+K(t) = \int_{0}^{t} \mathcal{I}(\tau) \, d\tau + K(0),
+\]
+and intellect is the gradient of knowledge:
+\[
+\mathcal{I}(t) = \frac{dK}{dt}.
+\]
+The concrete expression of capability requires the support of resources, including matter, energy, information, time, and space. In the context of embodied intelligence [6][7], basic capabilities include:
+
+\begin{itemize}
+\item Proprioception: perception of one’s own state (body, actions, emotions);
+\item Environmental perception: spatial localization and recognition of objects and actions;
+\item Motion capabilities: planning, execution, evaluation, and correction;
+\item Language capabilities: listening, speaking, reading, writing;
+\item Collective intelligence: state communication, multi-robot scheduling, human-robot collaboration.
+\end{itemize}
+
+These basic capabilities further combine to form advanced domain-specific intelligence—professional intelligence in sports, mathematics, science, technology, economics, art, and other fields.
+
+\subsection{Bridging Symbolism and Connectionism}
+In the history of AI, symbolism and connectionism have constituted two major paradigmatic paths [9]. Symbolism holds that the world can be explained through symbols and processed through precise logical procedures; connectionism argues that this process should be realized via artificial neural networks. Each has its advantages: symbols are naturally efficient for logical computation, while neural networks excel in pattern recognition and analog computation.
+
+However, pure symbolism struggles to learn from data and handle ambiguity and uncertainty; pure neural networks are “black boxes,” difficult to interpret and heavily data-dependent. Neuro-symbolic AI emerges precisely to combine the strengths of both—neural networks for pattern recognition and learning, symbolic reasoning for structured decision-making and interpretability [8][15].
+
+Our key insight is that all symbols can be tokenized and then processed through neural networks via analog computation. This means symbols and neural networks are not opposed but can coexist within a unified architecture—symbols providing efficient knowledge representation and logical reasoning, neural networks providing flexible pattern matching and generation. This fusion architecture provides the theoretical foundation for designing general-purpose agents.
+
+\section{Implementation of Intelligence: Architecture, Data, Algorithms, and Compute Engineering}
+\subsection{Modular Architecture of General-Purpose Agents}
+The design of general-purpose agents can follow modular principles. Contemporary robot frameworks typically comprise perception, planning, and control [12]. Based on the intellectual faculties proposed earlier, we can map these components to specific intellectual functions.
+
+\begin{itemize}
+\item \textbf{Attention Module}: receives information and queries, outputs relevant information. In engineering, this can be realized via neural attention mechanisms:
+\[
+\mathbf{q} = \text{Query}(\text{input}), \quad \mathbf{k}_i = \text{Key}(\text{memory}_i), \quad \mathbf{v}_i = \text{Value}(\text{memory}_i), \quad \mathbf{o} = \sum_i \alpha_i \mathbf{v}_i, 
+\ \alpha_i = \text{softmax}(\mathbf{q}^\top \mathbf{k}_i).
+\]
+\item \textbf{Perception Module}: converts raw information into numeric vectors/matrices via a tokenizer, then extracts features via an encoder:
+\[
+\mathbf{f} = \text{Encoder}(\text{Tokenizer}(\mathbf{x})).
+\]
+\item \textbf{Memory Module}: requires coordination of multiple storage structures: vector databases for raw information and associative features (supporting similarity retrieval); relational databases for structured relationships between information and symbols; graph databases for association structures among information.
+\item \textbf{Search Module}: computes similarity between perceptual feature matrices and memory feature matrices to retrieve and associate features:
+\[
+S = \mathbf{F}_{\text{percept}} \cdot \mathbf{F}_{\text{memory}}^\top, \quad \mathbf{f}_{\text{ret}} = \arg\max_{\mathbf{f}_i} S_i.
+\]
+The importance of searching for information is determined jointly by the importance of the verified data, the similarity of the information before, and the referencing relationship.
+\item \textbf{Computation Module}: transforms entity features, associative features, and operational symbols into output patterns:
+\[
+\mathbf{y} = \mathcal{C}(\mathbf{f}_{\text{entity}}, \mathbf{f}_{\text{assoc}}, \text{symbols}).
+\]
+\item \textbf{Imagination Module}: fuses, recombines, and generates new feature matrices from entity and associative features, then combines with memory to produce novel information:
+\[
+\mathbf{f}_{\text{new}} = \mathcal{G}(\mathbf{f}_{\text{entity}}, \mathbf{f}_{\text{assoc}}), \quad \text{output} = \text{Decode}(\mathbf{f}_{\text{new}}).
+\]
+\end{itemize}
+
+Combinations of these modules yield higher-level intelligence:
+\begin{itemize}
+\item \emph{Recognition} is the complete chain:
+\[
+\mathbf{x} \xrightarrow{\text{attention}} \mathbf{x}_{\text{att}} \xrightarrow{\text{perception}} \mathbf{f} \xrightarrow{\text{search}} \mathbf{f}_{\text{ret}} \to \text{entity/label}.
+\]
+\item \emph{Innovation} includes combinatorial and discovery-based forms:
+\begin{itemize}
+\item Combinatorial: 
+\[
+\mathbf{x} \to \text{attention} \to \mathbf{f} \to \text{association} \to \text{transformation} \to \mathbf{f}_{\text{new}} \xrightarrow{\text{validation}} \text{accepted}.
+\]
+\item Discovery-based: 
+\[
+\text{autonomous exploration} \to \mathbf{x}_{\text{new}} \to \mathbf{f}_{\text{new}} \to \text{association} \to \text{validation}.
+\]
+\end{itemize}
+\end{itemize}
+
+\subsection{Data Engineering}
+In real-world robotics projects, algorithmic models are often not the primary bottleneck—rather, the key to success lies in whether sufficiently rich data can be obtained, whether valuable mapping relationships exist within the data, and the efficiency of data iteration.
+
+\subsubsection{Data Acquisition}
+Collection: images, text, sound, tactile, etc.
+Data augmentation: random scaling, cropping, rotation, gamma transformation, affine/perspective transforms, mosaic, etc.
+Scanning + rendering (BlenderProc).
+Generation (GAN, diffusion) [11].
+Reconstruction (SAM3D, VGGT, DA3, NeRF, 3DGS).
+Simulation (PyBullet, Gazebo, MuJoCo, IsaacSim).
+
+\subsubsection{Data Cleaning}
+Data quality assessment; removal of dirty data (weak or missing mapping between input and label); deduplication of similar features; format conversion for various model training and inference pipelines.
+
+\subsubsection{Data Mining}
+Feature matrix $\mathbf{F} \in \mathbb{R}^{n \times d}$ yields similarity matrix:
+\[
+\mathbf{S} = \mathbf{F} \mathbf{F}^\top \in \mathbb{R}^{n \times n}.
+\]
+For labeled data: low similarity within same class (outliers) and high similarity across different classes (confusing points); for unlabeled data: clustering connected components of similar features and generating outliers; also, low similarity among outputs from different model structures for the same class (disputed points).
+
+\subsubsection{Data Annotation}
+Hybrid approach of model pre-annotation and manual annotation, managed with tools like Label-Studio and CVAT.
+
+\subsubsection{Data Verification}
+Algorithmic verification: sampling low-confidence predictions, disputed points between algorithm and manual labels; Manual verification: checking agreement with preset samples (known correct labels mixed with a few incorrect ones), sampling multi-annotator disagreements, random sampling.
+
+\subsubsection{Generalization}
+Closed-set fixed scenes: variations in angle, position, illumination, occlusion, blur.
+Closed-set multi-scenes: switching scenes for already trained categories.
+Open-set multi-scenes: registering unseen categories/scenes via feature extraction and matching for similarity-based generalization.
+
+\subsubsection{Real-Robot Closed-Loop Testing and Iteration}
+Missed/false detections: known environment + dynamic reasoning—model dynamically stores missed detection samples; for false detections, stores false positives based on known object categories.
+Localization bias: tactile feedback + dynamic reasoning—model-predicted trajectory executed with tactile-based calibration (over-correction/under-correction compensation).
+
+\subsubsection{Real-to-Sim-to-Real Pipeline:}
+The pipeline includes extensive data collection, simulation, and deployment. Key coordinate transforms are expressed as:
+\[
+T_{\text{end}}^{\text{base}} = T_{\text{head}}^{\text{base}} \cdot T_{\text{camera}}^{\text{head}} \cdot T_{\text{end}}^{\text{camera}},
+\]
+where $T_{\text{end}}^{\text{base}}$ is the end-effector pose in robot base frame, $T_{\text{head}}^{\text{base}}$ from forward kinematics, $T_{\text{camera}}^{\text{head}}$ from calibration, and $T_{\text{end}}^{\text{camera}}$ from perception (segmentation+depth). Grasp planning uses Signed Distance Function (SDF):
+\[
+\text{SDF}(\text{hand}, \text{object}) = \min_{\mathbf{p} \in \text{hand}} \| \mathbf{p} - \text{obj\_surface} \|.
+\]
+Reinforcement learning supervision:
+\[
+\mathcal{L} = \mathcal{L}_{\text{traj}} + \mathcal{L}_{\text{value}} + \mathcal{L}_{\text{feat}}.
+\]
+
+\subsection{Algorithm Architecture}
+\subsubsection{Perception}
+\paragraph{Visual Perception}
+Through image/video/RGB-D/lidar point cloud inputs, perceive object boundaries, types, keypoints, recognition features, and 3D spatial positions, addressing core issues of proprioceptive and environmental perception (where and what) [11][12].
+
+Visual hierarchical models: detection, segmentation, classification, keypoints, recognition, pose estimation, depth estimation, point cloud recognition, 3D reconstruction, etc. Multi-task models output multiple modalities simultaneously.
+
+SLAM: odometry-based (current pose = initial pose + cumulative odometry), landmark-based (current pose = landmark pose – relative pose between robot and landmark). Obstacle avoidance uses point cloud segmentation.
+
+\paragraph{Tactile Perception}
+Use tactile sensor information to determine whether the robot/hand has contacted the object and the contact force magnitude.
+
+\paragraph{Other Modalities: auditory, gustatory, olfactory, etc.}
+
+\subsubsection{Planning and Control}
+\paragraph{Planning}
+Classical planning algorithms include global planning (A*, Dijkstra, RRT, genetic algorithms) and local planning (DWA, TEB, PID tracking, artificial potential fields). Model-based planning (MPC, VN, VLN) and LLM/VLM planning output structured action sequences.
+
+\paragraph{Control}
+Mobility control and manipulation control. For grasping, the pipeline:
+\[
+\text{grasp} = \text{arg}\min_{\text{hand pose}} \text{SDF}(\text{hand}, \text{object}) + \lambda \cdot \text{penetration}.
+\]
+Reinforcement learning algorithms: MCTS, DQN, PPO, GRPO, RLHF, etc. [13].
+
+\subsubsection{End-to-End Models}
+End-to-end models (VA, VLA, VTA, VTLA, world models) are gaining attention. We advocate a progressive strategy: first establish layered perception-planning-control systems, then convert high-frequency tasks to end-to-end—trading data for efficiency.
+
+\subsubsection{Language and Generation}
+Language modules cover listening (ASR), speaking (TTS), reading (OCR), and writing (LLM/VLM + RAG). Retrieval-augmented generation (RAG):
+\[
+\text{response} = \text{LLM}(\text{prompt} \oplus \text{Retrieve}(\text{query})).
+\]
+Generative models include GANs, diffusion, flow matching, drifting.
+
+\subsubsection{Multi-Level MoE Architecture}
+Mixture-of-Experts (MoE) routing:
+\[
+\mathbf{f}_{\text{fused}} = \sum_{i} g_i(\mathbf{x}) \cdot \text{Encoder}_i(\mathbf{x}), \quad \mathbf{y} = \sum_{j} h_j(\mathbf{f}_{\text{fused}}) \cdot \text{Decoder}_j(\mathbf{f}_{\text{fused}}),
+\]
+where $g_i$ and $h_j$ are router weights.
+
+\subsubsection{Agents and Continual Learning}
+The core of an agent system includes knowledge base construction, dynamic model planning, execution feedback, and continual learning [3][4][5]. Continual learning techniques:
+- Elastic Weight Consolidation (EWC): $\mathcal{L} = \mathcal{L}_{\text{new}} + \sum_i \frac{\lambda}{2} F_i (\theta_i - \theta_i^*)^2$.
+- Experience replay: store and replay past samples.
+- Sub-network training, etc.
+
+\subsection{Compute and Deployment Engineering}
+The realization of intelligence relies on compute support. From data processing to model training (PyTorch, TensorFlow), from model lightweighting (neural architecture search, distillation, pruning, QAT, PTQ) to platform adaptation (CPU, GPU, NPU), and from inference frameworks to SDK development—this constitutes the complete compute pipeline.
+
+Edge-cloud integration is the current mainstream deployment mode: on-device deployment of small models ensures low latency and data security, while cloud APIs provide on-demand access to very large models.
+
+General brain + specific actuators architecture.
+
+\subsection{Current Status and Shortcomings}
+Although all key modules for general intelligence are available, significant gaps remain toward truly general intelligence [16].
+First, insufficient integration—each basic module has multiple independent implementations, but simple concatenation introduces large redundancy. There is a lack of a universal feature encoder and decoder.
+Second, low data efficiency—data generation and real-robot iteration are inefficient.
+Third, hardware bottlenecks—hardware stability, especially of dexterous hands, has significant room for improvement.
+Fourth, inadequate continual learning—the integration of long-term and short-term goal setting, value networks, and autonomous exploration requires deeper investigation.
+
+\section{Evaluation of Intelligence}
+\subsection{Evaluation Dimensions}
+Intelligence can be assessed along five dimensions [1][2]:
+\begin{enumerate}
+\item \textbf{Precision}: accuracy and reliability of task completion, corresponding to the accuracy of neural network outputs: $P = \frac{\text{correct}}{\text{total}}$.
+\item \textbf{Speed}: timeliness of information processing and decision-making, corresponding to training and inference speed on specific hardware: $S = \frac{1}{t_{\text{inference}}}$.
+\item \textbf{Depth}: depth of understanding of complex problems, corresponding to network depth $L$ (number of layers), which determines extraction and processing of higher-order features.
+\item \textbf{Breadth}: cross-domain and cross-modal generalization, corresponding to network width $W$ (number of neurons per layer), enabling parallel processing and multimodal fusion.
+\item \textbf{Efficiency}: effective output per unit of resource (matter, energy, information, time, space), corresponding to effective output with limited compute, power, data, inference time, and robot workspace:
+\[
+E = \frac{\text{task\_success\_rate}}{\text{resource\_consumption}}.
+\]
+\end{enumerate}
+Basic intelligences are somewhat independent; excellence in one does not guarantee excellence in another—for example, Newton was pre-eminent in physics but not in stock trading. Even within the same domain, different forms of intellect can be independent—e.g., the mathematician Hermite made major research contributions yet performed poorly in mathematical examinations. This resembles an intelligent machine with ordinary CPU, memory, storage, and communication, but equipped with powerful GPU/NPU and strong perception/generation models, given external valid information, it shows high perception, imagination, and creativity, but poor offline memory, search, and computation. Contemporary examinations, however, mainly test offline memory, search, and computation.
+
+\subsection{Comparison Between Human and Machine Intelligence}
+In terms of memory, search, computation efficiency, and knowledge dissemination, AI has far surpassed humans. Large language models can retrieve and process text volumes in seconds that a human could not read in a lifetime [18].
+In terms of imagination efficiency, text-, image-, and speech-based generation are approaching human levels, but multimodal imagination and generation still lag.
+In complex environment perception/recognition, creativity, energy efficiency, and real-world adaptability, AI still has a significant gap from humans [1], the human brain operates at ~20 watts for remarkable cognitive tasks, while training a large model requires megawatt-scale compute.
+However, this gap can be narrowed. By building a general-purpose brain with full perception, planning, control, autonomous exploration, and continual learning, combined with diverse effectors and rapid iteration in numerous real-world scenarios, AI's intelligence deficiencies can be progressively eliminated. The theoretical upper bound of machine environmental adaptability is far higher than humans, they can survive in environments lethal to humans, evolve at speeds impossible for humans, and scale indefinitely [19].
+
+\section{Conclusion and Outlook}
+Starting from the core thesis that “intellect is mapping” ($\mathcal{I}: \mathcal{X} \to \mathcal{Y}$), this paper systematically constructs a theoretical framework and implementation pathways for intelligence. We have argued for the essence of “intellect as information filtering, compression, storage, association, transformation, and generation, and for the synergy of intellect, knowledge, and resources in forming capabilities” ($C = \mathcal{F}(\mathcal{I}, K, R)$). On the implementation side, we elaborated on the modular architecture of general-purpose agents—from elemental faculties to combined intelligences and then to the hierarchical progression of embodied, collective, and machine intelligence.
+
+Our core viewpoints can be summarized in three points:
+First, the key modules for general intelligence are already available; the real challenge lies in system-level integration—requiring unified feature representations, general encoding-decoding architectures, and efficient autonomous exploration and continual learning mechanisms.
+Second, data is the primary bottleneck—whether sufficiently rich data can be obtained, whether valuable mapping relationships exist within the data, and the efficiency of data iteration determine the ultimate performance of intelligent systems.
+Third, the progressive “first layer-wise, then end-to-end” strategy is a pragmatic path toward general intelligence—accumulating data and experience in a layered architecture, then gradually converting mature tasks to end-to-end.
+
+Looking ahead, the following directions merit special attention:
+(1) General feature representation learning—building a unified cross-modal, cross-task feature space.
+(2) Efficient data generation and sim-to-real transfer—closing the gap between simulation and reality.
+(3) Continual learning and autonomous exploration—enabling agents to autonomously set goals and continuously evolve in open environments.
+(4) Neuro-symbolic fusion architectures—incorporating the structuredness and interpretability of symbolic reasoning while retaining neural flexibility [8][15].
+(5) Software-hardware co-optimization—vertical integration from algorithms to chips for improved energy efficiency.
+
+General artificial intelligence is on the horizon, and the direction is already clear. Intelligence is the key for life to unlock higher energy levels, and the ticket for human civilization to reach the stars. In the evolution of the universe, stable and efficient entropy-increasing structures have a higher probability of being preserved, the trend is independent of human will, but how to align with it while managing risks remains a question.
+
+\begin{thebibliography}{99}
+\bibitem{1} Levin’s continuum perspective proposes an alternative: Machine Psychometrics: A Mathematical Psychology of Artificial Intelligence. ar5iv.labs.arxiv.org.
+\bibitem{2} Matta, D. FROM THRESHOLDS TO TRAJECTORIES: The AGI Capability Maturity Model™ for Artificial General Intelligence. PhilArchive, 2025.
+\bibitem{3} A Comprehensive Survey on Agentic Artificial Intelligence Architectures: Reasoning, Planning and Real-World Applications. International Journal of Advanced Multidisciplinary Application, 2025.
+\bibitem{4} Xu, B. AI Agent Systems: Architectures, Applications, and Evaluation. JACM, 2025.
+\bibitem{5} A Holistic Review of Agentic AI Frameworks, Applications, and Research Trajectories. Archives of Computational Methods in Engineering, 2026.
+\bibitem{6} Zhang, W., et al. Embodied AI: A Survey on the Evolution from Perceptive to Behavioral Intelligence. SmartBot, 2025.
+\bibitem{7} Xu, Z., et al. A Survey on Robotics with Foundation Models: toward Embodied AI. arXiv:2402.02385, 2024.
+\bibitem{8} Nawaz, U., et al. A review of neuro-symbolic AI integrating reasoning and learning for advanced cognitive systems. Intelligent Systems with Applications, 2025.
+\bibitem{9} A Comparative review of Symbolism and Connectionism in AI\&Law: Tracing evolution and exploring integration. ScienceDirect, 2025.
+\bibitem{10} Mokaria, N. A Survey on Foundations and Frontiers of Multimodal Agentic Frameworks: Techniques and Applications. arXiv:2608.20379, 2026.
+\bibitem{11} Exploring Embodied Multimodal Large Models: Development, datasets, and future directions. Information Fusion, 2025.
+\bibitem{12} Foundation Models in Robotics: A Comprehensive Review of Methods, Models, Datasets, Challenges and Future Research Directions. arXiv, 2026.
+\bibitem{13} A Comprehensive Survey of Advances in Deep Reinforcement Learning for Autonomous Robotics Applications. Zenodo, 2025.
+\bibitem{14} Embodied Robot Manipulation in the Era of Foundation Models: Planning and Learning Perspectives. arXiv, 2026.
+\bibitem{15} Neuro-symbolic agentic AI: Architectures, integration patterns, applications, open challenges and future research directions. ScienceDirect, 2026.
+\bibitem{16} The ARC of Progress towards AGI: A Living Survey of Abstraction and Reasoning. arXiv, 2026.
+\bibitem{17} Large language models for robotics: Opportunities, challenges, and perspectives. ScienceDirect, 2024.
+\bibitem{18} The Standard Model of Mind. In: Generative AI vs. AGI: The Cognitive Strengths and Weaknesses of Modern LLMs. ar5iv.labs.arxiv.org.
+\bibitem{19} Open General Intelligence (OGI) Framework. arXiv.
+\end{thebibliography}
+
+\end{document}

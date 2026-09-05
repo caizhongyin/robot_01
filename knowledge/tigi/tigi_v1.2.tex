@@ -1,0 +1,814 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{geometry}
+\geometry{margin=1in}
+\setcounter{secnumdepth}{4}
+
+\newcommand{\Intell}{\mathcal{I}}
+\newcommand{\Feat}{\mathbf{f}}
+\newcommand{\Attn}{\mathcal{A}}
+\newcommand{\Per}{\mathcal{P}}
+\newcommand{\Mem}{\mathcal{M}}
+\newcommand{\Srch}{\mathcal{S}}
+\newcommand{\Comp}{\mathcal{C}}
+\newcommand{\Imag}{\mathcal{G}}
+\newcommand{\Vrfy}{\mathcal{V}}
+
+\title{A Theory and Implementation of General Intelligence: From Cognitive Architecture to Embodied Agents}
+\author{Zhongyin Cai}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The fundamental inquiry into the nature of intelligence and its artificial realization lies at the heart of AI research. From the perspective of cognitive science, this paper proposes the core thesis that ``Intellect is mapping'' and systematically elaborates a theoretical framework in which intellect is understood as the capacity for information filtering, compression, storage, association, transformation, and generation.
+\begin{equation}
+\Intell:\mathcal{X}\to\mathcal{Y},\qquad \mathcal{Y}=\Intell(\mathcal{X}),
+\label{eq:abstract-mapping}
+\end{equation}
+where $\mathcal{X}$ denotes the input information space and $\mathcal{Y}$ the output information space. We decompose intelligence into the synergistic interplay of intellect, knowledge, and resources.
+\begin{equation}
+\mathcal{C}=\mathcal{F}\left(\Intell,K,R\right),
+\label{eq:abstract-capability}
+\end{equation}
+where $K$ is knowledge and $R$ denotes resources. On this basis, we construct a modular architecture for general-purpose agent, encompassing elemental intellectual faculties such as attention, perception, memory, search, computation, and imagination, as well as their combinations---recognition and creativity. We further discuss implementation pathways across three levels: embodied intelligence, collective intelligence, and machine intelligence. Special attention is given to the triadic technology stack of data--algorithm--compute, analyzing the full closed loop from data acquisition, cleaning, mining, and annotation to simulation training and real-robot deployment, along with the engineering realization of core modules including perception, planning, control, end-to-end learning, and language understanding and generation. Through a comparative analysis of symbolism and connectionism, we argue for the viability of neuro-symbolic fusion architectures as a pathway to general intelligence, and establish a five-dimensional evaluation system for intelligence in terms of precision, speed, depth, breadth, and efficiency.
+\begin{equation}
+\mathbf{Q}=\left(P,S,D,B,E\right),\qquad P,S,D,B,E\in\mathbb{R}_{+},
+\label{eq:abstract-five-dim}
+\end{equation}
+where the five components are precision, speed, depth, breadth, and efficiency, respectively. Finally, we point out that building a general-purpose brain with full perception, planning, control, autonomous exploration, and continual learning capabilities, combined with diverse effectors and rapid iteration in real-world scenarios, constitutes a pragmatic path toward artificial general intelligence.
+\end{abstract}
+
+\textbf{Keywords:} intelligence theory; cognitive architecture; embodied AI; neuro-symbolic AI; general-purpose agent; continual learning
+
+\section{Introduction}
+Since the birth of artificial intelligence, the questions of ``what is intelligence'' and ``how to realize it'' have never ceased. From the Turing test to symbolism, from connectionism to today's neuro-symbolic fusion, every theoretical breakthrough and technological advance has redefined the boundaries of intelligence. However, despite deep learning and large language models demonstrating superhuman performance on specific tasks, the realization of general intelligence still faces fundamental challenges.
+
+A notable characteristic of current AI research is that basic modules are becoming mature, yet system-level integration remains insufficient. Perception models have made great strides in vision, text, speech, and other modalities; large language models exhibit surprising reasoning and planning abilities; and reinforcement learning has reached superhuman levels in certain control tasks [13]. Nevertheless, organically integrating these modules into a single general-purpose agent that can continually learn and autonomously make decisions in open, unstructured environments remains an open problem [3][4][5][10].
+
+The goal of this paper is to construct a complete theoretical framework from the fundamental definition of intelligence to its engineering implementation. Our core view is that the essence of intelligence is mapping---the transformation of information into features, and features into other information or new information.
+\begin{equation}
+\mathbf{x}\;\xrightarrow{\;\text{feature extraction}\;}\;\mathbf{f},\qquad
+\mathbf{f}\;\xrightarrow{\;\text{information processing}\;}\;\mathbf{x}^{\prime},
+\label{eq:intro-mapping}
+\end{equation}
+where $\mathbf{x}$ is raw information, $\mathbf{f}$ is a feature representation, and $\mathbf{x}^{\prime}$ denotes other information or newly generated information. Intellect, as meta-cognitive capacity, underlies all concrete abilities; capabilities, in turn, are the synergistic product of intellect, knowledge, and resources.
+\begin{equation}
+C=\mathcal{F}\left(\Intell,K,R\right),
+\label{eq:intro-capability}
+\end{equation}
+where $\Intell$ denotes intellect, $K$ knowledge, and $R$ resources. Based on this definition, we can decompose a general-purpose agent into engineering-realizable functional modules and systematically examine the achievements and shortcomings of existing technologies along the data--algorithm--compute axis.
+
+The contributions of this paper are:
+\begin{enumerate}
+\item Proposing ``intellect as mapping'' as a unified theoretical framework, incorporating elemental faculties---attention, perception, memory, search, computation, and imagination---into a coherent cognitive architecture.
+\item Constructing a complete mapping from cognitive modules to engineering implementations, providing a reference architecture for the design of general-purpose agents.
+\item Systematically analyzing key technical challenges and solution paths at the three levels of data engineering, algorithm design, and compute deployment.
+\item Establishing a multi-dimensional evaluation system for intelligence and offering a comparative analysis between human and machine intelligence.
+\end{enumerate}
+
+\section{Theoretical Foundations of Intelligence}
+\subsection{Definition of Intelligence: Intellect and Capability}
+Intelligence is a multi-layered concept. From a functionalist perspective, it can be decomposed into two dimensions: intellect and capability. Intellect is the core of intelligence---the meta-cognitive capacity for processing information; capability is the external manifestation of intellect when combined with knowledge and resources in specific contexts.
+\begin{equation}
+\text{Intelligence }=(\text{intellect},\text{ capability}),\qquad
+C=\mathcal{F}\left(\Intell,K,R\right),
+\label{eq:intelligence-decomp}
+\end{equation}
+where the first component is the meta-cognitive capacity for information processing and the second is its external manifestation given knowledge $K$ and resources $R$.
+
+\subsection{Intellect as Mapping}
+We propose the core thesis that \emph{Intellect is mapping}: the ability to transform information from one form to another.
+\begin{equation}
+\Intell:\mathcal{X}\to\mathcal{Y},\qquad \mathbf{y}=\Intell(\mathbf{x}),
+\label{eq:mapping-def}
+\end{equation}
+where $\mathbf{x}\in\mathcal{X}$ is information in one form and $\mathbf{y}\in\mathcal{Y}$ is information in another form. Specifically, Intellect comprises the following basic operations:
+
+\begin{enumerate}
+\item \textbf{Attention}: information weighting, filtering out irrelevant information;
+\begin{equation}
+\mathbf{x}_{\mathrm{att}}=\Attn(\mathbf{x},\mathbf{q};\mathbf{K},\mathbf{V})=\sum_i\alpha_i\mathbf{v}_i,\qquad
+\alpha_i=\mathrm{softmax}\left(\frac{\mathbf{q}^{\top}\mathbf{k}_i}{\sqrt{d_k}}\right),
+\label{eq:attention}
+\end{equation}
+where $\mathbf{q}$, $\mathbf{k}_i$, and $\mathbf{v}_i$ are query, key, and value vectors.
+
+\item \textbf{Perception}: extracting features from raw information;
+\begin{equation}
+\mathbf{f}=\Per(\mathbf{x};\theta_p),\qquad \mathbf{f}\in\mathbb{R}^{d},
+\label{eq:perception}
+\end{equation}
+where $\theta_p$ denotes the parameters of the perception model.
+
+\item \textbf{Memory}: storing features in retrievable forms;
+\begin{equation}
+\Mem:\ \mathbf{f}\;\mapsto\;(\mathrm{key},\mathbf{f}),\qquad
+\mathbf{f}\in \mathrm{RetrievableStore}(\Mem),
+\label{eq:memory}
+\end{equation}
+where the key enables future retrieval of the stored feature.
+
+\item \textbf{Search}: establishing associations among features and retrieving them;
+\begin{equation}
+\mathbf{f}_{\mathrm{ret}}=\Srch(\mathbf{f}_q)\;=\;\arg\max_{\mathbf{f}_i\in\Mem}\ \mathrm{sim}(\mathbf{f}_q,\mathbf{f}_i),
+\label{eq:search}
+\end{equation}
+where $\mathrm{sim}(\cdot,\cdot)$ is a similarity measure (e.g., cosine similarity).
+
+\item \textbf{Computation}: transforming perceptual features, associative features, and operational symbols into new patterns;
+\begin{equation}
+\mathbf{y}=\Comp(\mathbf{f}_1,\mathbf{f}_2,\dots,\mathbf{f}_n,\mathbf{s};\theta_c),
+\label{eq:computation}
+\end{equation}
+where $\mathbf{f}_1,\dots,\mathbf{f}_n$ are perceptual or associative features, $\mathbf{s}$ denotes operational symbols, and $\theta_c$ represents computational parameters.
+
+\item \textbf{Imagination}: recombination, fusion, and generation of features;
+\begin{equation}
+\mathbf{f}_{\mathrm{new}}=\Imag(\mathbf{f}_1,\mathbf{f}_2,\dots;\theta_g),
+\label{eq:imagination}
+\end{equation}
+where $\theta_g$ denotes the parameters of the generative model.
+\end{enumerate}
+
+Thus, the set of basic intellectual operations is
+\begin{equation}
+\Intell=\left\{\Attn,\Per,\Mem,\Srch,\Comp,\Imag\right\}.
+\label{eq:intellect-set}
+\end{equation}
+
+These basic intellectual operations can be combined into higher-level cognitive functions. \emph{Recognition} is the combination of attention, perception, memory, and search---from information to features to memory association.
+\begin{equation}
+\mathbf{x}\;\xrightarrow{\Attn}\;\mathbf{x}_{\mathrm{att}}
+\;\xrightarrow{\Per}\;\mathbf{f}
+\;\xrightarrow{\Mem}\;\mathrm{store}(\mathbf{f})
+\;\xrightarrow{\Srch}\;\mathbf{f}_{\mathrm{ret}}
+\;\rightarrow\;\mathrm{label/entity}.
+\label{eq:recognition}
+\end{equation}
+\emph{Creativity} further incorporates computation, imagination, and validation---including both discovery-based innovation (discovering new features) and combinatorial innovation (generating new combinations), both requiring validation with real data.
+\begin{equation}
+\mathbf{f}_{\mathrm{new}}=\Imag\left(\Comp\left(\mathbf{f}_{\mathrm{att}},\mathbf{f}_{\mathrm{ret}},\dots\right)\right),\qquad
+\Vrfy(\mathbf{f}_{\mathrm{new}},\mathcal{D}_{\mathrm{real}})\in\{0,1\},
+\label{eq:creativity}
+\end{equation}
+where $\Vrfy$ is validation against real data $\mathcal{D}_{\mathrm{real}}$ and a value of $1$ denotes acceptance.
+
+\subsection{Capability: Synergy of Intellect, Knowledge, and Resources}
+If intellect is the ``hardware'' foundation of intelligence, then capability is the ``software'' manifestation when intellect is combined with knowledge and resources.
+\begin{equation}
+C=\mathcal{F}\left(\Intell,K,R\right),
+\label{eq:capability}
+\end{equation}
+Knowledge can be viewed as the integral of intellect over time---accumulation of intellect; intellect is the gradient of knowledge---the direction and rate of knowledge change.
+\begin{equation}
+K(t)=K(t_0)+\int_{t_0}^{t}\Intell(\tau)\,\mathrm{d}\tau,
+\label{eq:knowledge-integral}
+\end{equation}
+\begin{equation}
+\Intell(t)=\frac{\mathrm{d}K}{\mathrm{d}t}.
+\label{eq:intellect-gradient}
+\end{equation}
+The concrete expression of capability requires the support of resources, including matter, energy, information, time, and space. In the context of embodied intelligence [6][7], basic capabilities include:
+
+\begin{itemize}
+\item Proprioception: perception of one's own state (body, actions, emotions);
+\item Environmental perception: spatial localization and recognition of objects and actions;
+\item Motion capabilities: planning, execution, evaluation, and correction;
+\item Language capabilities: listening, speaking, reading, writing;
+\item Collective intelligence: state communication, multi-robot scheduling, human-robot collaboration.
+\end{itemize}
+
+These basic capabilities further combine to form advanced domain-specific intelligence\allowbreak{}---professional intelligence in sports, mathematics, science, technology, economics, art, and other fields.
+\begin{equation}
+\mathcal{D}_{j}=\mathcal{H}\left(C_{\mathrm{prop}},C_{\mathrm{env}},C_{\mathrm{mot}},C_{\mathrm{lang}},C_{\mathrm{col}}\right),
+\label{eq:domain-intelligence}
+\end{equation}
+where $\mathcal{D}_j$ denotes the intelligence of a professional domain and $\mathcal{H}$ is the combination function over the basic embodied capabilities.
+
+\subsection{Bridging Symbolism and Connectionism}
+In the history of AI, symbolism and connectionism have constituted two major paradigmatic paths [9]. Symbolism holds that the world can be explained through symbols and processed through precise logical procedures; connectionism argues that this process should be realized via artificial neural networks. Each has its advantages: symbols are naturally efficient for logical computation, while neural networks excel in pattern recognition and analog computation.
+\begin{equation}
+\text{Symbolism}:\ \mathbf{y}=\mathrm{Logic}\bigl(\mathrm{Symbolize}(\mathbf{x})\bigr),\qquad
+\text{Connectionism}:\ \mathbf{y}=\mathrm{NN}_{\theta}(\mathbf{x}).
+\label{eq:two-paradigms}
+\end{equation}
+
+However, pure symbolism struggles to learn from data and handle ambiguity and uncertainty; pure neural networks are ``black boxes,'' difficult to interpret and heavily data-dependent. Neuro-symbolic AI emerges precisely to combine the strengths of both---neural networks for pattern recognition and learning, symbolic reasoning for structured decision-making and interpretability [8][15].
+
+Our key insight is that all symbols can be tokenized and then processed through neural networks via analog computation. This means symbols and neural networks are not opposed but can coexist within a unified architecture---symbols providing efficient knowledge representation and logical reasoning, neural networks providing flexible pattern matching and generation.
+\begin{equation}
+\text{Neuro-symbolic}:\quad
+\mathbf{s}\;\xrightarrow{\mathrm{Tokenize}}\;\mathbf{t}(\mathbf{s})
+\;\xrightarrow{\mathrm{Embed}}\;\mathbf{e}_{\mathbf{s}}
+\;\xrightarrow{\mathrm{NN}}\;\mathbf{h}
+\;\xrightarrow{\mathrm{SymbolicReasoning}}\;\mathbf{y}.
+\label{eq:neuro-symbolic}
+\end{equation}
+This fusion architecture provides the theoretical foundation for designing general-purpose agents.
+
+\section{Implementation of Intelligence: Architecture, Data, Algorithms, and Compute Engineering}
+\subsection{Modular Architecture of General-Purpose Agents}
+The design of general-purpose agents can follow modular principles. Contemporary robot frameworks typically comprise perception, planning, and control [12]. Based on the intellectual faculties proposed earlier, we can map these components to specific intellectual functions.
+
+\begin{itemize}
+\item \textbf{Attention Module}: receives information and queries, outputs relevant information. In engineering, this can be realized via neural attention mechanisms.
+\begin{equation}
+\mathbf{q}=\mathrm{Query}(\mathbf{x}),\quad
+\mathbf{k}_i=\mathrm{Key}(\mathbf{m}_i),\quad
+\mathbf{v}_i=\mathrm{Value}(\mathbf{m}_i),
+\label{eq:module-attention-qkv}
+\end{equation}
+\begin{equation}
+\mathbf{o}=\sum_i\alpha_i\mathbf{v}_i,\qquad
+\alpha_i=\mathrm{softmax}\bigl(\mathbf{q}^{\top}\mathbf{k}_i\bigr),
+\label{eq:module-attention-out}
+\end{equation}
+where $\{\mathbf{m}_i\}$ denotes memory content or source information.
+
+\item \textbf{Perception Module}: converts raw information into numeric vectors/matrices via a tokenizer, then extracts features via an encoder.
+\begin{equation}
+\mathbf{f}=\mathrm{Encoder}\bigl(\mathrm{Tokenizer}(\mathbf{x})\bigr).
+\label{eq:module-perception}
+\end{equation}
+
+\item \textbf{Memory Module}: requires coordination of multiple storage structures: vector databases for raw information and associative features (supporting similarity retrieval); relational databases for structured relationships between information and symbols; graph databases for association structures among information.
+\begin{equation}
+\Mem_{\mathrm{vec}}:\ \mathbf{f}\mapsto(\mathrm{id},\mathbf{f}),\quad
+\Mem_{\mathrm{rel}}:\ (e_1,e_2,r),\quad
+\Mem_{\mathrm{graph}}:\ \mathcal{G}=(\mathcal{V},\mathcal{E},\mathcal{R}),
+\label{eq:module-memory}
+\end{equation}
+where $\mathcal{V}$, $\mathcal{E}$, and $\mathcal{R}$ denote information nodes, associations, and relation types, respectively.
+
+\item \textbf{Search Module}: computes similarity between perceptual feature matrices and memory feature matrices to retrieve and associate features.
+\begin{equation}
+\mathbf{S}=\mathbf{F}_{\mathrm{percept}}\,\mathbf{F}_{\mathrm{memory}}^{\top},\qquad
+\mathbf{f}_{\mathrm{ret}}=\arg\max_{\mathbf{f}_i\in\Mem}\ \mathrm{sim}(\mathbf{f}_q,\mathbf{f}_i),
+\label{eq:module-search}
+\end{equation}
+The importance of searching for information is determined jointly by the importance of the verified data, the similarity of the information before, and the referencing relationship.
+\begin{equation}
+w_i=\psi\bigl(\mathrm{imp}(d_i),\; \mathrm{sim}(q,d_i),\; \mathrm{ref}(d_i)\bigr),
+\label{eq:module-search-importance}
+\end{equation}
+where $\mathrm{imp}(d_i)$ is the importance of verified data, $\mathrm{sim}(q,d_i)$ is the similarity between the current information and retrieved information, and $\mathrm{ref}(d_i)$ measures the referencing relationship.
+
+\item \textbf{Computation Module}: transforms entity features, associative features, and operational symbols into output patterns.
+\begin{equation}
+\mathbf{y}=\Comp\left(\mathbf{f}_{\mathrm{entity}},\mathbf{f}_{\mathrm{assoc}},\mathbf{s}_{\mathrm{op}}\right).
+\label{eq:module-computation}
+\end{equation}
+
+\item \textbf{Imagination Module}: fuses, recombines, and generates new feature matrices from entity and associative features, then combines with memory to produce novel information.
+\begin{equation}
+\mathbf{f}_{\mathrm{new}}=\Imag\left(\mathbf{f}_{\mathrm{entity}},\mathbf{f}_{\mathrm{assoc}}\right),\qquad
+\mathbf{x}_{\mathrm{novel}}=\mathrm{Decode}\left(\mathbf{f}_{\mathrm{new}},\Mem\right).
+\label{eq:module-imagination}
+\end{equation}
+\end{itemize}
+
+Combinations of these modules yield higher-level intelligence:
+
+\begin{itemize}
+\item \emph{Recognition} is the complete chain information $\rightarrow$ features $\rightarrow$ memory $\rightarrow$ association, converting images/point-clouds/sounds into recognized entities/language/numbers.
+\begin{equation}
+\begin{split}
+\mathrm{Recognition}: \mathbf{x}\;\to\;\mathbf{f}
+\;\to\;\Mem(\mathbf{f})\;\to\;\mathbf{f}_{\mathrm{assoc}}\\
+\to\;\text{entities/language/numbers},
+\end{split}
+\label{eq:recognition-chain-impl}
+\end{equation}
+
+\item \emph{Innovation} includes combinatorial and discovery-based forms:
+\begin{itemize}
+\item Combinatorial: information $\rightarrow$ attention $\rightarrow$ features $\rightarrow$ memory $\rightarrow$ association $\rightarrow$ transformation $\rightarrow$ new information generation $\rightarrow$ real-data validation $\rightarrow$ effective generation.
+\begin{equation}
+\mathbf{x}\to\Attn(\mathbf{x})\to\Per(\mathbf{x})\to\Mem\to\Srch\to\Comp\to\Imag
+\;\xrightarrow{\;\Vrfy(\cdot,\mathcal{D}_{\mathrm{real}})\;}\;\text{effective generation}.
+\label{eq:innovation-combinatorial}
+\end{equation}
+\item Discovery-based: autonomous exploration $\rightarrow$ attention $\rightarrow$ new information $\rightarrow$ features $\rightarrow$ memory $\rightarrow$ association $\rightarrow$ new information discovery $\rightarrow$ real-data validation $\rightarrow$ effective discovery.
+\begin{equation}
+\text{exploration}\to\Attn\to\mathbf{x}_{\mathrm{new}}\to\Per\to\Mem\to\Srch
+\;\xrightarrow{\;\Vrfy(\cdot,\mathcal{D}_{\mathrm{real}})\;}\;\text{effective discovery}.
+\label{eq:innovation-discovery}
+\end{equation}
+\end{itemize}
+\end{itemize}
+
+\subsection{Data Engineering}
+In real-world robotics projects, algorithmic models are often not the primary bottleneck---rather, the key to success lies in whether sufficiently rich data can be obtained, whether valuable mapping relationships exist within the data, and the efficiency of data iteration.
+\begin{equation}
+\mathcal{T}_{\mathrm{system}}=\mathcal{T}\bigl(D_{\mathrm{richness}},\ \mathrm{map}(D),\ \eta_{\mathrm{iteration}}\bigr),
+\label{eq:data-key}
+\end{equation}
+where $D_{\mathrm{richness}}$ measures data abundance, $\mathrm{map}(D)$ measures the value of the mapping relationships contained in the data, and $\eta_{\mathrm{iteration}}$ measures data-iteration efficiency.
+
+\subsubsection{Data Acquisition}
+Collection: images, text, sound, tactile, etc.
+Data augmentation: random scaling, cropping, rotation, gamma transformation, affine/perspective transforms, mosaic, etc.
+Scanning + rendering (BlenderProc).
+Generation (GAN, diffusion) [11].
+Reconstruction (SAM3D, VGGT, DA3, NeRF, 3DGS).
+Simulation (PyBullet, Gazebo, MuJoCo, IsaacSim).
+
+\subsubsection{Data Cleaning}
+Data quality assessment; removal of dirty data (weak or missing mapping between input and label); deduplication of similar features; format conversion for various model training and inference pipelines.
+\begin{equation}
+D_{\mathrm{clean}}=\bigl\{(x_i,y_i)\in D:\ q(x_i,y_i)\ge\tau_q\bigr\}
+\ \setminus\ \bigl\{(x_i,y_i):\exists\,j\neq i,\ \mathrm{sim}(\mathbf{f}_i,\mathbf{f}_j)>\tau_s\bigr\},
+\label{eq:data-cleaning}
+\end{equation}
+where $q(x_i,y_i)$ denotes the quality of the input--label mapping and $\tau_q,\tau_s$ are thresholds.
+
+\subsubsection{Data Mining}
+Feature matrix $\times$ matrix$^{\top}$ $\rightarrow$ similarity matrix $\rightarrow$ for labeled data: low similarity within same class (outliers) and high similarity across different classes (confusing points); for unlabeled data: clustering connected components of similar features and generating outliers; also, low similarity among outputs from different model structures for the same class (disputed points).
+\begin{equation}
+\mathbf{S}=\mathbf{F}\mathbf{F}^{\top},\qquad \mathbf{F}\in\mathbb{R}^{n\times d},\quad \mathbf{S}\in\mathbb{R}^{n\times n},
+\label{eq:data-mining-similarity}
+\end{equation}
+\begin{equation}
+\begin{aligned}
+\mathcal{O}_{\mathrm{labeled}}&=\bigl\{(i,j):\ y_i=y_j,\ S_{ij}<\tau_{\mathrm{low}}\bigr\},\\
+\mathcal{P}_{\mathrm{confusing}}&=\bigl\{(i,j):\ y_i\neq y_j,\ S_{ij}>\tau_{\mathrm{high}}\bigr\},\\
+\mathcal{O}_{\mathrm{unlabeled}}&=\text{outliers of connected-component clustering on }\mathbf{S}.
+\end{aligned}
+\label{eq:data-mining-rule}
+\end{equation}
+
+\subsubsection{Data Annotation}
+Hybrid approach of model pre-annotation and manual annotation, managed with tools like Label-Studio and CVAT.
+\begin{equation}
+A_{\mathrm{final}}=A_{\mathrm{model}}\cup A_{\mathrm{manual}},\qquad
+A_{\mathrm{manual}}\supseteq\bigl\{(x,y)\in A_{\mathrm{model}}:\ \mathrm{conf}_{\mathrm{model}}(x)<\tau\bigr\}.
+\label{eq:data-annotation}
+\end{equation}
+
+\subsubsection{Data Verification}
+Algorithmic verification: sampling low-confidence predictions, disputed points between algorithm and manual labels; Manual verification: checking agreement with preset samples (known correct labels mixed with a few incorrect ones), sampling multi-annotator disagreements, random sampling.
+\begin{equation}
+\mathcal{V}_{\mathrm{alg}}=\bigl\{(x,y):\ p_{\theta}(y\mid x)<\tau_{\mathrm{conf}}\bigr\}\cup\bigl\{\text{algorithm--manual disputes}\bigr\},
+\label{eq:verify-alg}
+\end{equation}
+\begin{equation}
+\mathcal{V}_{\mathrm{manual}}=\bigl\{(x,y):\ \text{disagreement with preset checks, annotators, or random samples}\bigr\}.
+\label{eq:verify-manual}
+\end{equation}
+
+\subsubsection{Generalization}
+Closed-set fixed scenes: variations in angle, position, illumination, occlusion, blur.
+Closed-set multi-scenes: switching scenes for already trained categories.
+Open-set multi-scenes: registering unseen categories/scenes via feature extraction and matching for similarity-based generalization.
+\begin{equation}
+\hat{y}=\arg\max_{c\in\mathcal{C}_{\mathrm{known}}}\ \mathrm{sim}\bigl(\mathbf{f}(x),\boldsymbol{\mu}_c\bigr),\qquad
+\begin{cases}
+\text{recognize } \hat{y}, & \mathrm{sim}\ge\tau_{\mathrm{sim}},\\[2pt]
+\text{register a new category/scene}, & \mathrm{sim}<\tau_{\mathrm{sim}},
+\end{cases}
+\label{eq:generalization-open}
+\end{equation}
+where $\boldsymbol{\mu}_c$ is the prototype or registration-set feature of category $c$.
+
+\subsubsection{Real-Robot Closed-Loop Testing and Iteration}
+Missed/false detections: known environment + dynamic reasoning---model dynamically stores missed detection samples; for false detections, stores false positives based on known object categories.
+\begin{equation}
+D_{\mathrm{closed\text{-}loop}}\leftarrow D_{\mathrm{closed\text{-}loop}}\cup D_{\mathrm{missed}}\cup D_{\mathrm{false\text{-}positive}},
+\label{eq:closed-loop-detect}
+\end{equation}
+where $D_{\mathrm{missed}}$ contains dynamically stored missed-detection samples and $D_{\mathrm{false\text{-}positive}}$ stores false positives according to known categories.
+Localization bias: tactile feedback + dynamic reasoning---model-predicted trajectory executed with tactile-based calibration (over-correction/under-correction compensation).
+\begin{equation}
+\hat{\mathbf{p}}=\mathbf{p}_{\mathrm{model}}+\boldsymbol{\delta}_{\mathrm{tactile}},\qquad
+\boldsymbol{\delta}_{\mathrm{tactile}}=\varphi\bigl(\text{over-/under-correction compensation}\bigr).
+\label{eq:localization-bias}
+\end{equation}
+
+\subsubsection{Real-to-Sim-to-Real Pipeline:}
+\begin{description}
+\item[1.] Batch collect human-ego operation data (multi-view video, task language descriptions, operator pose, arm end-effector pose and hand joint-angle trajectories, tactile sensor information).
+\item[2.] Collect a small amount of real-robot teleoperation data (multi-view video, task descriptions, robot pose, arm end-effector pose, dexterous hand joint-angle trajectories, tactile info).
+\item[3.] Use VLM model to decompose human and robot action videos into segments of primitive actions, with manual verification of decomposition quality.
+\item[4.] Train robot action model taking multi-view video, primitive action type, robot pose, end-effector pose, hand joint trajectories, and tactile info as input; use multiple encoders to extract multimodal features, fuse them, and feed into an action expert head to output future trajectories, a value network to predict success/failure probability, and a feature prediction head to predict future world state changes.
+\begin{equation}
+\begin{split}
+\bigl(\hat{\boldsymbol{\tau}}_{t:t+H},\ \hat{v},\ \hat{\mathbf{z}}_{t:t+H}\bigr)
+&= \mathcal{E}_{\mathrm{action}}\Bigl(\mathcal{E}_{\mathrm{fusion}}\bigl(
+\mathcal{E}_{\mathrm{mv}}(I_{\mathrm{mv}}),\mathcal{E}_{\mathrm{act}}(a_{\mathrm{prim}}),\\
+&\qquad\qquad \mathcal{E}_{\mathrm{pose}}(\mathbf{p}),\mathcal{E}_{\mathrm{hand}}(\mathbf{q}_h),\mathcal{E}_{\mathrm{tac}}(\mathbf{s}_{\mathrm{tac}})\bigr)\Bigr),
+\end{split}
+\label{eq:action-model}
+\end{equation}
+where $\hat{\boldsymbol{\tau}}$ is the future trajectory head, $\hat{v}$ is the success/failure value head, and $\hat{\mathbf{z}}$ is the future world-state feature head.
+\item[5.] Modeling and simulation:
+\begin{description}
+\item[5.1] Generate 3D models of objects and environments via 3D scanners, generative models, and 3D reconstruction.
+\begin{description}
+\item[5.1.1] Scan operation objects and robot environments with 3D scanners.
+\item[5.1.2] Generate 3D models from internet images via SAM3D, and generate different surface textures using diffusion models.
+\item[5.1.3] Reconstruct environment 3D models from internet videos via VGGT/\allowbreak{}Depth\-Anything\-v3.
+\item[5.1.4] Convert models from steps 2--3 to point clouds and manually denoise.
+\end{description}
+\item[5.2] Build simulation environments and load the above 3D models with robot URDFs.
+\item[5.3] Randomize object positions, textures, angles, and lighting in simulation.
+\item[5.4] Set camera intrinsics/extrinsics, initial robot pose, end-effector pose, and initial hand joint angles.
+\item[5.5] Predict robot trajectories via the action model based on primitive action sequences for various tasks.
+\item[5.6] Dynamically adjust motion trajectories via trajectory planning algorithms to reach near objects.
+\item[5.7] Dynamically adjust end-effector poses via inverse kinematics to reach the target near objects.
+\item[5.8] Dynamically adjust hand joint angles and compute SDF values between the hand and object 3D models to minimize SDF while avoiding interpenetration.
+\begin{equation}
+\min_{\mathbf{q}_h}\ \mathrm{SDF}\bigl(\mathrm{hand}(\mathbf{q}_h),\mathrm{object}\bigr),\qquad
+\mathrm{s.t.}\ \mathrm{SDF}\bigl(\mathrm{hand}(\mathbf{q}_h),\mathrm{object}\bigr)\ge\epsilon_{\mathrm{contact}},
+\label{eq:sdf-manip}
+\end{equation}
+where the constraint prevents interpenetration.
+\item[5.9] For mobility primitive action, judge success based on whether the object is within the robot's reachable workspace.
+\begin{equation}
+\mathrm{success}_{\mathrm{mobility}}=\mathbb{1}\bigl[\mathbf{o}_{\mathrm{obj}}\in\mathcal{W}_{\mathrm{reachable}}(\mathbf{q}_{\mathrm{robot}})\bigr].
+\label{eq:success-mobility}
+\end{equation}
+\item[5.10] For manipulation primitive action, judge success by whether the SDF between hand and object is below a threshold with no interpenetration.
+\begin{equation}
+\mathrm{success}_{\mathrm{manip}}=\mathbb{1}\Bigl[\mathrm{SDF}\bigl(\mathrm{hand},\mathrm{object}\bigr)<\tau_{\mathrm{sdf}}\ \wedge\ \text{no interpenetration}\Bigr].
+\label{eq:success-manip}
+\end{equation}
+\item[5.11] Supervise the action model's trajectory outputs, success/failure probabilities, and future world features via reinforcement learning [13].
+\begin{equation}
+\max_{\theta}\ J(\theta)=\mathbb{E}_{\tau\sim\pi_{\theta}}\left[\sum_{t=0}^{T}\gamma^{t}r_t\right],
+\label{eq:rl-objective}
+\end{equation}
+where the action model $\pi_\theta$ provides trajectory, value, and feature predictions that receive reinforcement supervision.
+\item[5.12] Randomly load different robot URDFs, different objects, random obstacles, and randomize initial poses, camera views, object positions, lighting, and textures; use Rapidly-exploring Random Trees to generate large numbers of diverse motion and manipulation trajectories, repeating steps 3--11.
+\item[5.13] Record simulation data (multi-view rendered video, primitive action type, robot pose, end-effector/hand joint trajectories, tactile info, success flags, etc.) in real time and save in H5 format.
+\end{description}
+\end{description}
+
+\subsection{Algorithm Architecture}
+\subsubsection{Perception}
+\paragraph{Visual Perception}
+Through image/video/RGB-D/lidar point cloud inputs, perceive object boundaries, types, keypoints, recognition features, and 3D spatial positions, addressing core issues of proprioceptive and environmental perception (where and what) [11][12].
+\begin{equation}
+\mathbf{o}=\Bigl(\underbrace{\mathbf{p}_{\mathrm{3D}}}_{\text{where}},\;
+\underbrace{c}_{\text{what}},\;\mathbf{b},\;\{\mathbf{k}_j\},\;\mathbf{f}_{\mathrm{rec}}\Bigr),
+\label{eq:visual-output}
+\end{equation}
+where $\mathbf{p}_{\mathrm{3D}}$ is the 3D position, $c$ the object type, $\mathbf{b}$ the boundary, $\{\mathbf{k}_j\}$ keypoints, and $\mathbf{f}_{\mathrm{rec}}$ the recognition feature.
+
+Visual hierarchical models:
+\begin{itemize}
+\item Detection: bounding boxes (bbox/obb, anchor-based/anchor-free); engineering: Ultralytics.
+\item Segmentation: semantic, instance, panoptic, and salient object segmentation; models: SAM, UNet, DeepLabV3+.
+\item Classification: object, scene, image quality, object quality, video classification; engineering: ClassyVision.
+\item Keypoints: coordinate regression or heatmap regression for faces, bodies, hands, objects; engineering: Ultralytics.
+\item Recognition: feature extraction to cluster same classes and separate different classes, then compare with a registration set; includes face recognition, person re-ID, generic object recognition, speech recognition, OCR; engineering: InsightFace.
+\begin{equation}
+\hat{c}=\arg\max_{c\in\mathcal{C}_{\mathrm{reg}}}\ \mathrm{sim}\bigl(\mathbf{f}(x),\mathbf{f}_{c}^{\mathrm{reg}}\bigr),
+\label{eq:recognition-feature}
+\end{equation}
+where $\mathcal{C}_{\mathrm{reg}}$ is the registration set and $\mathbf{f}_{c}^{\mathrm{reg}}$ denotes registered features of class $c$.
+\item Pose estimation: regression (e.g., edgeai-yolox) or geometry (points + ICP) + model-based (e.g., FoundationPose, ZebraPose).
+\item Depth estimation: monocular (GlpDepth, ZipDepth), completion (lingbot-depth), stereo (geometric calibration + rectification + disparity + triangulation; model-based: FoundationStereo, RT-Monster), video/multi-view (VGGT, DA3, lingbot-map).
+\begin{equation}
+z=\frac{bf}{d},
+\label{eq:depth-stereo}
+\end{equation}
+where $z$ is depth, $b$ the stereo baseline, $f$ the focal length, and $d$ the disparity.
+\item Point cloud recognition: PointNet++, PointPillars, CenterPoint.
+\item 3D reconstruction: SFM, MVS, NeRF, 3DGS.
+\item Surround-view (BEV, OCC) is more relevant for autonomous vehicles and not essential for most robots.
+\end{itemize}
+
+Visual multi-task models (e.g., DINO, HydraNet) simultaneously output detection, segmentation, classification, keypoints, depth, etc.
+\begin{equation}
+\bigl(\mathbf{b},c,\mathbf{k},\mathbf{f},z\bigr)=\mathrm{MultiTask}(I;\theta),
+\label{eq:multi-task}
+\end{equation}
+where $I$ is an input image and $\theta$ denotes the shared multi-task model parameters.
+
+SLAM:
+\begin{itemize}
+\item Odometry-based: visual, LiDAR, IMU, current pose $=$ initial pose $+$ cumulative odometry; algorithms: SuperPoints+LightGlue, LIO.
+\begin{equation}
+\mathbf{p}_{t}=\mathbf{p}_{0}+\sum_{k=1}^{t}\Delta\mathbf{p}_{k},
+\label{eq:slam-odometry}
+\end{equation}
+where $\Delta\mathbf{p}_k$ is the incremental odometry at step $k$.
+\item Landmark-based: marker, key object recognition and pose estimation, current pose $=$ landmark pose $-$ relative pose between robot and landmark; algorithms: ORB-SLAM3 etc.
+\begin{equation}
+\mathbf{p}_{\mathrm{robot}}=\mathbf{p}_{\mathrm{landmark}}-\Delta\mathbf{p}_{\mathrm{robot\ from\ landmark}},
+\label{eq:slam-landmark}
+\end{equation}
+where $\Delta\mathbf{p}_{\mathrm{robot\ from\ landmark}}$ is the relative pose of the robot with respect to the landmark.
+\item Obstacle avoidance: obstacle extraction from point clouds (LiDAR/RGB-D/depth), detection/segmentation for known sets, drivable area segmentation for open-set obstacles.
+\item Localization bias: GPS (meters), scene-map localization (cm), relative boundary segmentation (mm), tactile sensors (dmm).
+\item Classic SLAM algorithms:
+\begin{itemize}
+\item Cartographer: Indoor service robots / warehouse AGVs, Industrial-grade stability, excellent large-scale mapping consistency;
+\item Gmapping: Small-scale indoor robots, Low computation, high accuracy, well integrated with ROS;
+\item FAST-LIO2 or Hector SLAM: UAVs / handheld devices, No odometry needed, high computational efficiency, adapts to high-speed motion;
+\item LOAM / LIO-SAM: High-precision 3D mapping, Benchmark for 3D LiDAR SLAM, high accuracy;
+\item ORB-SLAM3: Vision-dominant scenes, Best accuracy among visual SLAM, supports multi-sensor configurations;
+\item VINS-Mono / fusion: Visual-IMU fusion, Tightly coupled VIO with excellent performance;
+\item R3LIVE: Colored 3D mapping / surveying, Real-time colored point clouds, dense reconstruction;
+\item Karto SLAM: Resource-constrained platforms, High CPU efficiency;
+\item Multi-sensor fusion: sensors: vision, LiDAR, IMU, RTK, GPS; algorithms---ORB-SLAM3 + LiDAR (e.g., visual-inertial-slam-fusion).
+\end{itemize}
+\end{itemize}
+
+\paragraph{Tactile Perception}
+Use tactile sensor information to determine whether the robot/hand has contacted the object and the contact force magnitude; reference projects: ViTacFormer, 3DTacDex, PP-Tac.
+\begin{equation}
+\bigl(c_{\mathrm{contact}},\ F_{\mathrm{contact}}\bigr)=\mathrm{TactileModel}\bigl(\mathbf{s}_{\mathrm{tac}}\bigr),
+\label{eq:tactile}
+\end{equation}
+where $c_{\mathrm{contact}}\in\{0,1\}$ indicates contact and $F_{\mathrm{contact}}$ is the contact force magnitude.
+
+\paragraph{Other Modalities:} auditory, gustatory, olfactory, etc.
+
+\subsubsection{Planning and Control}
+\paragraph{Planning}
+Classical planning algorithms include global planning (A*, Dijkstra, RRT, genetic algorithms) and local planning (DWA, TEB, PID tracking, artificial potential fields).
+\begin{equation}
+\tau^{*}=\arg\min_{\tau\in\mathcal{T}}\ J_{\mathrm{cost}}(\tau),
+\label{eq:planning-cost}
+\end{equation}
+where $\tau$ denotes a trajectory and $J_{\mathrm{cost}}$ is the planning cost.
+Robotics motion planning libraries such as Pinocchio, PyRoboPlan, Pyroki, and MoveIt provide standardized implementations for manipulator motion planning.
+Model-based planning: MPC, VN, VLN provide trajectory planning in dynamic environments.
+\begin{equation}
+\tau_{t:t+H}^{*}=\arg\min_{\tau_{t:t+H}}\ J\bigl(\mathbf{s}_t,\tau_{t:t+H}\bigr),
+\label{eq:model-planning}
+\end{equation}
+where $\mathbf{s}_t$ is the current state and the plan is re-evaluated in a receding-horizon manner in dynamic environments.
+LLM/VLM planning represents a new paradigm---through language or visual descriptions, large models output structured planning language or JSON-format sequences of primitive actions [17].
+\begin{equation}
+a_{1:T}^{\mathrm{plan}}=\mathrm{LLM/VLM}(l,v),\qquad
+a_t\in\mathcal{A}_{\mathrm{primitive}},
+\label{eq:llm-planning}
+\end{equation}
+where $l$ is a language description, $v$ is a visual description, and $\mathcal{A}_{\mathrm{primitive}}$ is the primitive-action set.
+
+\paragraph{Control}
+Mobility control: wheeled chassis, rotorcraft, quadruped, wheeled-quadruped, biped, wheeled-biped, etc.
+Manipulator + dexterous hand/gripper operation:
+\begin{itemize}
+\item Hierarchical grasping: what to grasp, where to grasp, and how to grasp (object detection/recognition, pose estimation, grasp gesture and trajectory planning) [14].
+\item Object instance segmentation: YOLO/SAM.
+\item Stereo depth estimation: RT-Monster/FoundationStereo.
+\item Solve object pose in camera frame and transform to robot base frame: $T_{\mathrm{end}}^{\mathrm{base}}=T_{\mathrm{head}}^{\mathrm{base}}\;T_{\mathrm{camera}}^{\mathrm{head}}\;T_{\mathrm{end}}^{\mathrm{camera}}$, where $T_{\mathrm{end}}^{\mathrm{camera}}$ comes from segmentation+depth model, $T_{\mathrm{camera}}^{\mathrm{head}}$ from calibration, $T_{\mathrm{head}}^{\mathrm{base}}$ from forward kinematics via URDF.
+\begin{equation}
+T_{\mathrm{end}}^{\mathrm{base}}=T_{\mathrm{head}}^{\mathrm{base}}\cdot T_{\mathrm{camera}}^{\mathrm{head}}\cdot T_{\mathrm{end}}^{\mathrm{camera}},
+\label{eq:pose-transform}
+\end{equation}
+where the superscript and subscript denote the source and target frames, respectively.
+\item Grasp computation: compute SDF values from object geometry + hand/gripper URDF, ICP between fingers/palm and object point cloud; model-based: DexGraspNet.
+\begin{equation}
+\mathbf{q}_{h}^{*}=\arg\min_{\mathbf{q}_h}\ \Bigl[\mathrm{SDF}\bigl(\mathrm{hand}(\mathbf{q}_h),\mathrm{object}\bigr)
++\lambda\,\mathrm{penetration}\bigl(\mathrm{hand}(\mathbf{q}_h),\mathrm{object}\bigr)\Bigr],
+\label{eq:grasp-sdf}
+\end{equation}
+where the first term favors surface contact and the second penalizes interpenetration.
+\item Solve relative pose from key fingertips (thumb/index) to object center.
+\item Solve relative pose from fingertips to end-effector.
+\item Plan trajectory from initial end-pose to target end-pose.
+\item Robot-specific variation problem: cumulative errors from camera calibration, manufacturing/assembly tolerances, zero-position calibration errors, actuation errors, perception localization errors.
+\begin{equation}
+\epsilon_{\mathrm{total}}=\epsilon_{\mathrm{calibration}}+\epsilon_{\mathrm{assembly}}+\epsilon_{\mathrm{zero}}+\epsilon_{\mathrm{actuation}}+\epsilon_{\mathrm{perception}},
+\label{eq:error-composition}
+\end{equation}
+where the components denote the corresponding cumulative error sources.
+\item Solutions: environmental perception + proprioception + visual relative offset control + tactile motion compensation + PID control.
+\end{itemize}
+
+Reinforcement Learning: MCTS, DQN, PPO, GRPO, RLHF, etc. [13].
+\begin{equation}
+\theta\leftarrow\theta+\alpha\,\nabla_{\theta}\mathbb{E}_{\tau\sim\pi_{\theta}}\left[\sum_{t}\gamma^{t}r_t\right],
+\label{eq:rl-update}
+\end{equation}
+where the expectation is over trajectories $\tau$ and the concrete estimator depends on the chosen algorithm (e.g., MCTS, DQN, PPO, GRPO, RLHF).
+
+\subsubsection{End-to-End Models}
+End-to-end models (VA, VLA, VTA, VTLA, world models, e.g., LeRobot, Cosmos) have gained much attention [11][12]. However, global end-to-end models face challenges: excessive complexity, cold-start data issues, multimodal coupling, missing modalities, poor interpretability, and difficult regression testing for new versions. We advocate a ``first layer-wise, then end-to-end'' progressive strategy: first establish layered perception-planning-control systems to solve known problems; as execution data accumulates, gradually expand task types and scenarios and convert high-frequency tasks to end-to-end---trading data for efficiency, reducing information loss, and increasing theoretical upper bounds.
+\begin{equation}
+\mathcal{M}_{k+1}=
+\begin{cases}
+\mathcal{M}_{\mathrm{layered}} = \mathcal{C}\circ\mathcal{P}\circ\mathcal{E}, & \text{if execution data } d_k<d^{*},\\[3pt]
+\mathrm{E2E}\bigl(\mathcal{M}_{\mathrm{layered}},\mathcal{D}_{1:k}\bigr), & \text{if high-frequency tasks accumulate, } d_k\ge d^{*},
+\end{cases}
+\label{eq:layered-to-e2e}
+\end{equation}
+where $\mathcal{D}_{1:k}$ is the accumulated execution data and $d^{*}$ is the data threshold. This aligns with how humans learn complex tasks: initially breaking down steps, and with repeated execution and exposure to anomalies, eventually performing them fluidly.
+
+\subsubsection{Language and Generation}
+Language modules cover: listening (ASR), speaking (TTS), reading (OCR), and writing (LLM/VLM + RAG). Retrieval-augmented generation (RAG) significantly boosts domain-specific performance through the synergy of Embedding, Rerank, Search, and Prompt.
+\begin{equation}
+\mathbf{y}=\mathrm{LLM}\Bigl(\mathrm{Prompt}\;\oplus\;\mathrm{Rerank}\bigl(\mathrm{Retrieve}_{\mathrm{embed}}(q)\bigr)\Bigr),
+\label{eq:rag}
+\end{equation}
+where $q$ is the query and $\oplus$ denotes concatenation of the prompt and retrieved context. Generative models include GANs, diffusion, flow matching, drifting, etc., playing increasingly important roles in image, video, audio, and action generation.
+
+\subsubsection{Multi-Level MoE Architecture}
+Mixture-of-Experts (MoE) provides an elegant scaling method for general-purpose agents: information is routed through a Router, activating multiple Encoders; fused features are then output by multiple Decoders. Encoders are divided into shallow, medium, and deep layers; Decoders support coarse-, medium-, and fine-grained outputs. The Router dynamically selects which Encoders/Decoders to activate, which layers of each Encoder to use, and which granularity of each Decoder to output, based on input type, complexity, and required accuracy.
+\begin{equation}
+\mathbf{f}_{\mathrm{fused}}=\sum_{i}g_{i}^{E}(\mathbf{x})\,\mathrm{Encoder}_{i}^{\ell_i}(\mathbf{x}),\qquad
+\mathbf{y}=\sum_{j}g_{j}^{D}(\mathbf{f}_{\mathrm{fused}})\,\mathrm{Decoder}_{j}^{r_j}(\mathbf{f}_{\mathrm{fused}}),
+\label{eq:moe}
+\end{equation}
+where $g_i^E(\mathbf{x})$ and $g_j^D(\mathbf{f}_{\mathrm{fused}})$ are router weights depending on input type, complexity, and required accuracy; $\ell_i$ is the selected encoder layer depth and $r_j$ the selected decoder output granularity.
+
+\subsubsection{Agents and Continual Learning}
+The core of an agent system includes knowledge base construction, dynamic model planning, execution feedback, and continual learning [3][4][5]. The knowledge base comprises: atomic skill libraries (modular encapsulation of functions/classes), skill trees, databases (vector, relational, graph), workflows, execution dependencies, issue repositories, and version management of all modules.
+\begin{equation}
+\mathcal{K}=\bigl\{\mathcal{A}_{\mathrm{skills}},\;\mathcal{T}_{\mathrm{skill\ tree}},\;\mathcal{D}_{\mathrm{vec/rel/graph}},\;\mathcal{W}_{\mathrm{workflows}},\;\mathcal{D}_{\mathrm{exec}},\;\mathcal{I}_{\mathrm{issues}},\;\mathcal{V}_{\mathrm{versions}}\bigr\}.
+\label{eq:knowledge-base}
+\end{equation}
+Executable program generation adopts a ``problem + RAG + LLM'' pattern, combined with dynamic execution, anomaly detection, behavior correction, and feedback mechanisms, forming a closed-loop for continuous evolution.
+\begin{equation}
+\begin{split}
+\mathrm{program}&=\mathrm{LLM}\bigl(\mathrm{problem}\;\oplus\;\mathrm{RAG}\bigr),\\
+\mathrm{loop}&:\ \mathrm{execute}\to\mathrm{anomaly\ detect}\to\mathrm{correct}\to\mathrm{learn}.
+\end{split}
+\label{eq:agent-program-loop}
+\end{equation}
+Continual learning is the key capability that distinguishes general-purpose agents from static models. Key techniques include: test-time tuning, Elastic Weight Consolidation (EWC), experience replay, sub-network training, and integrated training-inference architectures.
+\begin{equation}
+\mathcal{L}_{\mathrm{CL}}(\theta)=\mathcal{L}_{\mathrm{new}}(\theta)+\frac{\lambda}{2}\sum_{i}F_{i}\bigl(\theta_i-\theta_i^{*}\bigr)^{2},
+\label{eq:ewc}
+\end{equation}
+where $F_i$ is the Fisher information of old tasks at parameter $\theta_i^{*}$ and $\lambda$ controls the consolidation strength.
+
+\subsection{Compute and Deployment Engineering}
+The realization of intelligence relies on compute support. From data processing to model training (PyTorch, TensorFlow), from model lightweighting (neural architecture search, distillation, pruning, QAT, PTQ) to platform adaptation (CPU, GPU, NPU), and from inference frameworks (TensorRT, FlashRT, TNN, MNN, NCNN, RKNN) to SDK development---this constitutes the complete compute pipeline.
+\begin{equation}
+\begin{split}
+\text{Compute pipeline}:\quad
+&\mathrm{data}\to\mathrm{train}\to\mathrm{lightweight}\\
+&\qquad\qquad\to\mathrm{platform\ adaptation}\to\mathrm{infer}\to\mathrm{SDK}.
+\end{split}
+\label{eq:compute-pipeline}
+\end{equation}
+Edge-cloud integration is the current mainstream deployment mode: on-device deployment of small models (using Ollama, vLLM, TensorRT-LLM, FlashRT, RKLLM, etc.) ensures low latency and data security, while cloud APIs (GPT, Claude, DeepSeek, etc.) provide on-demand access to very large models.
+\begin{equation}
+r\mapsto\begin{cases}
+\mathrm{edge}(r), & \text{small model, low latency, private data},\\[2pt]
+\mathrm{cloud}(r), & \text{large model accessed on demand},
+\end{cases}
+\label{eq:edge-cloud}
+\end{equation}
+where $r$ denotes a request. Deployment SDKs must include a general scheduling architecture, communication (ROS2/Socket), and safety mechanisms (hardware constraints, logic constraints, exception handling).
+
+\paragraph*{General brain + specific actuators architecture:}
+Brain: perception, planning, control, end-to-end, language, generation, MoE, agent, continual learning.
+Workflow: data processing, training, inference, deployment, runtime, feedback data, and software-hardware iteration closed-loop.
+Actuators: mobility (wheeled, rotorcraft, quadruped, wheeled-quadruped, biped, wheeled-biped, etc.), body (folding joints, lifting rods, etc.), manipulation (hands, grippers, forks, turntables, supports, etc.).
+\begin{equation}
+\begin{split}
+\mathrm{System}&=\bigl\langle \mathrm{Brain},\;\mathrm{Workflow},\;\mathrm{Actuators}\bigr\rangle,\\
+\mathrm{Workflow}&:\ \mathrm{data}\to\mathrm{train}\to\mathrm{deploy}\to\mathrm{runtime}\to\mathrm{feedback}\to\mathrm{iterate}.
+\end{split}
+\label{eq:brain-actuator}
+\end{equation}
+
+\subsection{Current Status and Shortcomings}
+Although all key modules for general intelligence are available, significant gaps remain toward truly general intelligence [16].
+First, insufficient integration---each basic module has multiple independent implementations, but simple concatenation introduces large redundancy. There is a lack of a universal feature encoder (taking different modalities and outputting features that cluster within classes and separate across classes) and a universal decoder (decoding fused features to different downstream tasks with variable granularities).
+\begin{equation}
+\nexists\ \mathcal{E}^{*}:\ \mathcal{M}\to\mathcal{F}\quad\text{s.t.}\quad
+\mathrm{sim}\bigl(\mathcal{E}^{*}(x_i),\mathcal{E}^{*}(x_j)\bigr)\ \begin{cases}
+\text{large}, & y_i=y_j,\\
+\text{small}, & y_i\neq y_j,
+\end{cases}
+\label{eq:universal-encoder-gap}
+\end{equation}
+and similarly there is no universal decoder $\mathcal{D}^{*}$ that maps fused features to arbitrary downstream tasks and granularities.
+Second, low data efficiency---data generation and real-robot iteration are inefficient; a unified multimodal data generation pipeline is missing. Language-modality data is relatively rich, but effective data for visual-spatial, tactile, and action modalities are still insufficient.
+Third, hardware bottlenecks---hardware stability, especially of dexterous hands, has significant room for improvement.
+Fourth, inadequate continual learning---the integration of long-term and short-term goal setting, value networks, and autonomous exploration requires deeper investigation.
+\begin{equation}
+\mathrm{CL}^{*}\;\supseteq\;\bigl\{\text{long/short-term goal setting},\ \text{value networks},\ \text{autonomous exploration}\bigr\}.
+\label{eq:continual-learning-need}
+\end{equation}
+
+\section{Evaluation of Intelligence}
+\subsection{Evaluation Dimensions}
+Intelligence can be assessed along five dimensions [1][2]:
+\begin{equation}
+\mathbf{Q}=\bigl(P,S,D,B,E\bigr),\qquad
+P,S,D,B,E\in\mathbb{R}_{+},
+\label{eq:eval-vector}
+\end{equation}
+where $P$ is precision, $S$ speed, $D$ depth, $B$ breadth, and $E$ efficiency.
+
+\begin{enumerate}
+\item \textbf{Precision}: accuracy and reliability of task completion, corresponding to the accuracy of neural network outputs.
+\begin{equation}
+P=\frac{\text{number of correctly completed tasks}}{\text{total number of tasks}}.
+\label{eq:eval-precision}
+\end{equation}
+\item \textbf{Speed}: timeliness of information processing and decision-making, corresponding to training and inference speed on specific hardware.
+\begin{equation}
+S=\frac{1}{t_{\mathrm{inference}}}
+\label{eq:eval-speed}
+\end{equation}
+where $t_{\mathrm{inference}}$ is the per-decision inference time (equivalently, throughput on a given hardware platform).
+\item \textbf{Depth}: depth of understanding of complex problems, corresponding to network depth, which determines extraction and processing of higher-order features.
+\begin{equation}
+D\propto L_{\mathrm{network}},\qquad L_{\mathrm{network}}=\text{number of processing layers},
+\label{eq:eval-depth}
+\end{equation}
+where deeper networks are expected to extract and process higher-order features.
+\item \textbf{Breadth}: cross-domain and cross-modal generalization, corresponding to network width, enabling parallel processing and multimodal fusion.
+\begin{equation}
+B\propto W_{\mathrm{network}}\times M_{\mathrm{tasks/modalities}},
+\label{eq:eval-breadth}
+\end{equation}
+where $W_{\mathrm{network}}$ is network width and $M_{\mathrm{tasks/modalities}}$ is the number of tasks or modalities handled.
+\item \textbf{Efficiency}: effective output per unit of resource (matter, energy, information, time, space), corresponding to effective output with limited compute, power, data, inference time, and robot workspace.
+\begin{equation}
+E=\frac{\text{effective output (task success)}}{\text{resource consumption (compute, power, data, time, space)}}.
+\label{eq:eval-efficiency}
+\end{equation}
+\end{enumerate}
+
+Basic intelligences are somewhat independent; excellence in one does not guarantee excellence in another---for example, Newton was pre-eminent in physics but not in stock trading. Even within the same domain, different forms of intellect can be independent---e.g., the mathematician Hermite made major research contributions yet performed poorly in mathematical examinations. This resembles an intelligent machine with ordinary CPU, memory, storage, and communication, but equipped with powerful GPU/NPU and strong perception/generation models, given external valid information, it shows high perception, imagination, and creativity, but poor offline memory, search, and computation. Contemporary examinations, however, mainly test offline memory, search, and computation.
+\begin{equation}
+q_i\ \not\Rightarrow\ q_j\qquad (i\neq j),\quad \mathbf{q}=(P,S,D,B,E),
+\label{eq:intelligence-independence}
+\end{equation}
+meaning high performance along one dimension or form of intelligence does not guarantee high performance along another.
+
+\subsection{Comparison Between Human and Machine Intelligence}
+In terms of memory, search, computation efficiency, and knowledge dissemination, AI has far surpassed humans. Large language models can retrieve and process text volumes in seconds that a human could not read in a lifetime [18].
+In terms of imagination efficiency, text-, image-, and speech-based generation are approaching human levels, but multimodal imagination and generation still lag.
+In complex environment perception/recognition, creativity, energy efficiency, and real-world adaptability, AI still has a significant gap from humans [1], the human brain operates at ~20 watts for remarkable cognitive tasks, while training a large model requires megawatt-scale compute.
+\begin{equation}
+P_{\mathrm{human\;brain}}\approx20\ \mathrm{W},\qquad
+P_{\mathrm{large\;model\;training}}\sim10^{6}\ \mathrm{W},
+\label{eq:energy-comparison}
+\end{equation}
+\begin{equation}
+\eta_{\mathrm{cognition}}=\frac{\text{effective cognitive output}}{P},
+\qquad
+\eta_{\mathrm{human}}\gg\eta_{\mathrm{machine}}\ \ \text{at present}.
+\label{eq:cognitive-efficiency}
+\end{equation}
+However, this gap can be narrowed. By building a general-purpose brain with full perception, planning, control, autonomous exploration, and continual learning, combined with diverse effectors and rapid iteration in numerous real-world scenarios, AI's intelligence deficiencies can be progressively eliminated. The theoretical upper bound of machine environmental adaptability is far higher than humans, they can survive in environments lethal to humans, evolve at speeds impossible for humans, and scale indefinitely [19].
+\begin{equation}
+\sup_{E\in\mathcal{E}}\ \mathcal{A}_{\mathrm{machine}}(E)\ \geq\ \sup_{E\in\mathcal{E}}\ \mathcal{A}_{\mathrm{human}}(E),
+\label{eq:adaptability-bound}
+\end{equation}
+where $\mathcal{A}(\cdot)$ is environmental adaptability and $\mathcal{E}$ denotes the set of possible environments; the machine can also evolve and scale without human biological constraints.
+
+\section{Conclusion and Outlook}
+Starting from the core thesis that ``intellect is mapping,'' this paper systematically constructs a theoretical framework and implementation pathways for intelligence. We have argued for the essence of ``intellect as information filtering, compression, storage, association, transformation, and generation, and for the synergy of intellect, knowledge, and resources in forming capabilities.
+\begin{equation}
+\Intell:\mathcal{X}\to\mathcal{Y},\qquad
+C=\mathcal{F}\bigl(\Intell,K,R\bigr),\qquad
+\mathbf{Q}=(P,S,D,B,E).
+\label{eq:conclusion-core}
+\end{equation}
+On the implementation side, we elaborated on the modular architecture of general-purpose agents---from elemental faculties (attention, perception, memory, search, computation, imagination) to combined intelligences (recognition and creativity), and then to the hierarchical progression of embodied, collective, and machine intelligence.
+
+Our core viewpoints can be summarized in three points:
+First, the key modules for general intelligence are already available; the real challenge lies in system-level integration\allowbreak{}---requiring unified feature representations, general encoding-decoding architectures, and efficient autonomous exploration and continual learning mechanisms.
+Second, data is the primary bottleneck---whether sufficiently rich data can be obtained, whether valuable mapping relationships exist within the data, and the efficiency of data iteration determine the ultimate performance of intelligent systems.
+Third, the progressive ``first layer-wise, then end-to-end'' strategy is a pragmatic path toward general intelligence---accumulating data and experience in a layered architecture, then gradually converting mature tasks to end-to-end.
+
+Looking ahead, the following directions merit special attention:
+\begin{enumerate}
+\item General feature representation learning---building a unified cross-modal, cross-task feature space.
+\item Efficient data generation and sim-to-real transfer---closing the gap between simulation and reality.
+\item Continual learning and autonomous exploration---enabling agents to autonomously set goals and continuously evolve in open environments.
+\item Neuro-symbolic fusion architectures---incorporating the structuredness and interpretability of symbolic reasoning while retaining neural flexibility [8][15].
+\item Software-hardware co-optimization---vertical integration from algorithms to chips for improved energy efficiency.
+\end{enumerate}
+
+General artificial intelligence is on the horizon, and the direction is already clear. Intelligence is the key for life to unlock higher energy levels, and the ticket for human civilization to reach the stars. In the evolution of the universe, stable and efficient entropy-increasing structures have a higher probability of being preserved, the trend is independent of human will, but how to align with it while managing risks remains a question.
+
+\begin{thebibliography}{99}
+\bibitem{1} Levin's continuum perspective proposes an alternative: Machine Psychometrics: A Mathematical Psychology of Artificial Intelligence. ar5iv.labs.arxiv.org.
+\bibitem{2} Matta, D. FROM THRESHOLDS TO TRAJECTORIES: The AGI Capability Maturity ModelTM for Artificial General Intelligence. PhilArchive, 2025.
+\bibitem{3} A Comprehensive Survey on Agentic Artificial Intelligence Architectures: Reasoning, Planning and Real-World Applications. International Journal of Advanced Multidisciplinary Application, 2025.
+\bibitem{4} Xu, B. AI Agent Systems: Architectures, Applications, and Evaluation. JACM, 2025.
+\bibitem{5} A Holistic Review of Agentic AI Frameworks, Applications, and Research Trajectories. Archives of Computational Methods in Engineering, 2026.
+\bibitem{6} Zhang, W., et al. Embodied AI: A Survey on the Evolution from Perceptive to Behavioral Intelligence. SmartBot, 2025.
+\bibitem{7} Xu, Z., et al. A Survey on Robotics with Foundation Models: toward Embodied AI. arXiv:2402.02385, 2024.
+\bibitem{8} Nawaz, U., et al. A review of neuro-symbolic AI integrating reasoning and learning for advanced cognitive systems. Intelligent Systems with Applications, 2025.
+\bibitem{9} A Comparative review of Symbolism and Connectionism in AI\&Law: Tracing evolution and exploring integration. ScienceDirect, 2025.
+\bibitem{10} Mokaria, N. A Survey on Foundations and Frontiers of Multimodal Agentic Frameworks: Techniques and Applications. arXiv:2608.20379, 2026.
+\bibitem{11} Exploring Embodied Multimodal Large Models: Development, datasets, and future directions. Information Fusion, 2025.
+\bibitem{12} Foundation Models in Robotics: A Comprehensive Review of Methods, Models, Datasets, Challenges and Future Research Directions. arXiv, 2026.
+\bibitem{13} A Comprehensive Survey of Advances in Deep Reinforcement Learning for Autonomous Robotics Applications. Zenodo, 2025.
+\bibitem{14} Embodied Robot Manipulation in the Era of Foundation Models: Planning and Learning Perspectives. arXiv, 2026.
+\bibitem{15} Neuro-symbolic agentic AI: Architectures, integration patterns, applications, open challenges and future research directions. ScienceDirect, 2026.
+\bibitem{16} The ARC of Progress towards AGI: A Living Survey of Abstraction and Reasoning. arXiv, 2026.
+\bibitem{17} Large language models for robotics: Opportunities, challenges, and perspectives. ScienceDirect, 2024.
+\bibitem{18} The Standard Model of Mind. In: Generative AI vs. AGI: The Cognitive Strengths and Weaknesses of Modern LLMs. ar5iv.labs.arxiv.org.
+\bibitem{19} Open General Intelligence (OGI) Framework. arXiv.
+\end{thebibliography}
+
+\end{document}
